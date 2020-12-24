@@ -1,0 +1,27 @@
+load("@npm//@bazel/typescript:index.bzl", "ts_library")
+load("@build_bazel_rules_nodejs//:index.bzl", "nodejs_binary")
+
+package(default_visibility = ["//visibility:public"])
+
+ts_library(
+    name = "lib",
+    srcs = ["index.ts"],
+    deps = [
+        "@npm//@types/faker",
+        "@npm//@types/node",
+        "@npm//faker",
+    ],
+)
+
+nodejs_binary(
+    name = "bin",
+    data = [":lib"],
+    entry_point = "index.ts",
+)
+
+genrule(
+    name = "generate",
+    outs = ["random.txt"],
+    cmd = "$(location bin) $(RULEDIR)",
+    tools = [":bin"],
+)
