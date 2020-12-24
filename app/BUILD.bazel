@@ -17,6 +17,8 @@ nodejs_binary(
     name = "bin",
     data = [":lib"],
     entry_point = "index.ts",
+    # this was the fix
+    templated_args = ["--bazel_patch_module_resolver"],
 )
 
 genrule(
